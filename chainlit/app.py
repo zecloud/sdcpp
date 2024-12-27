@@ -2,7 +2,6 @@ import chainlit as cl
 from stable_diffusion_cpp import StableDiffusion
 from chainlit import make_async
 from io import BytesIO
-import traceback
 from huggingface_hub import snapshot_download,hf_hub_download
 
 def dlmodels():

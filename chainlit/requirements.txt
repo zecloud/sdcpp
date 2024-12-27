@@ -1,1 +1,3 @@
 chainlit
+pydantic==2.10.1
+huggingface_hub
