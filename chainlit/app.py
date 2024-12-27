@@ -1,5 +1,6 @@
 import chainlit as cl
 from stable_diffusion_cpp import StableDiffusion
+import random
 from chainlit import make_async
 from io import BytesIO
 from huggingface_hub import snapshot_download,hf_hub_download
@@ -38,11 +39,13 @@ def initstabledif():
 asyncinitstabledif =make_async(initstabledif)
 
 def runstabledif(stable_diffusion,prompt):
+    seed = random.randint(0, 2 ** 32 - 1)
     output = stable_diffusion.txt_to_img(
         prompt=prompt,
         sample_steps=4,
         cfg_scale=1.0, # a cfg_scale of 1 is recommended for FLUX
         sample_method="euler", # euler is recommended for FLUX
+        seed=seed,
     )
     bIO = BytesIO()
     output[0].save(bIO, format="PNG")
@@ -60,11 +63,11 @@ async def on_chat_start():
 @cl.on_message
 async def main(message: cl.Message):
     # Your custom logic goes here...
-    stable_diffusion = cl.user_session.get("stable_diffusion")
+    stable_diffusion = cl.user_session.get("stablediffusion")
     output = await asyncrunstabledif(stable_diffusion, message.content)
     # Send a response back to the user
     image = cl.Image(content=output, name="image1", display="inline"),
     await cl.Message(
         content=f"prompt: {message.content}",
-        elements=[image],
+        elements=image,
     ).send()
