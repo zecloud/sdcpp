@@ -25,6 +25,7 @@ def dlmodels():
 
 
 #asyncdlmodels =make_async(dlmodels)
+@cl.cache
 def initstabledif():    
     modelpath,vaepath,clippath,t5path=dlmodels()
     stable_diffusion = StableDiffusion(
@@ -36,6 +37,8 @@ def initstabledif():
         verbose = True
     )
     return stable_diffusion
+
+sdcache=initstabledif()
 asyncinitstabledif =make_async(initstabledif)
 
 def runstabledif(stable_diffusion,prompt):
@@ -56,14 +59,14 @@ asyncrunstabledif =make_async(runstabledif)
 
 @cl.on_chat_start
 async def on_chat_start():
-    stable_diffusion=await asyncinitstabledif()
+    #stable_diffusion=sdcache#await asyncinitstabledif()
     print("A new chat session has started!")
-    cl.user_session.set("stablediffusion", stable_diffusion)
+    #cl.user_session.set("stablediffusion", stable_diffusion)
 
 @cl.on_message
 async def main(message: cl.Message):
     # Your custom logic goes here...
-    stable_diffusion = cl.user_session.get("stablediffusion")
+    stable_diffusion = sdcache#cl.user_session.get("stablediffusion")
     output = await asyncrunstabledif(stable_diffusion, message.content)
     # Send a response back to the user
     image = cl.Image(content=output, name="image1", display="inline"),
