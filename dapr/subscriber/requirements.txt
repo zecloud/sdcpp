@@ -1,0 +1,6 @@
+dapr
+dapr-ext-grpc
+huggingface_hub
+cachetools
+types-cachetools
+
