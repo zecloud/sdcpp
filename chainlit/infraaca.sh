@@ -1,10 +1,12 @@
-RESOURCE_GROUP="gpuaca"
-ENVIRONMENT="gpuenvp"
+RESOURCE_GROUP="agentsdcpp"
+ENVIRONMENT="gpuwp"
 STORAGE_ACCOUNT_NAME="fluxstorageaca"
-LOCATION="australiaeast"
+LOCATION="westus3"
 APP_NAME="sdchatbot"
 CONTAINER_REGISTRY_NAME="zecloud"
 CONTAINER_IMAGE_NAME="sdcppchatbot:latest"
+az storage account create --name "$STORAGE_ACCOUNT_NAME" --resource-group "$RESOURCE_GROUP" --location "$LOCATION" --sku Standard_LRS --kind StorageV2
+
 az containerapp create 
 --name $APP_NAME 
 --resource-group $RESOURCE_GROUP 
@@ -13,7 +15,7 @@ az containerapp create
 --target-port 80 
 --ingress external 
 --query properties.configuration.ingress.fqdn 
---workload-profile-name "NC8as-T4" 
+--workload-profile-name "gpua100" 
 --registry-identity 'system' 
 --registry-server "$CONTAINER_REGISTRY_NAME.azurecr.io" 
 --system-assigned 

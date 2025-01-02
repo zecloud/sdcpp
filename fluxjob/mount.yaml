@@ -1,0 +1,8 @@
+      volumeMounts:
+      - mountPath: /pretrained_models
+        volumeName: models
+    initContainers: null
+    volumes:
+    - name: models
+      storageType: AzureFile
+      storageName: pretrainedmodelsshare

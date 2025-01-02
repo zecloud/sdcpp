@@ -5,7 +5,7 @@ STORAGE_ACCOUNT_NAME="fluxstorageaca"
 LOCATION="australiaeast"
 QUEUE_NAME="fluxjob"
 CONTAINER_REGISTRY_NAME="zecloud"
-CONTAINER_IMAGE_NAME="sdjob:v2"
+CONTAINER_IMAGE_NAME="sdjob:finalv2"
 az storage account create --name "$STORAGE_ACCOUNT_NAME" --resource-group "$RESOURCE_GROUP" --location "$LOCATION" --sku Standard_LRS --kind StorageV2
 az storage queue create --name "$QUEUE_NAME" --account-name "$STORAGE_ACCOUNT_NAME" --connection-string "$QUEUE_CONNECTION_STRING"
 az storage queue create --name "finished$QUEUE_NAME" --account-name "$STORAGE_ACCOUNT_NAME" --connection-string "$QUEUE_CONNECTION_STRING"
@@ -30,5 +30,5 @@ az containerapp job create --name "$JOB_NAME"
 --registry-server "$CONTAINER_REGISTRY_NAME.azurecr.io"  
 --mi-system-assigned  
 --registry-identity 'system' 
---workload-profile-name "NC8as-T4" 
+--workload-profile-name "gpua100" 
 --env-vars "INPUTQUEUENAME=$QUEUE_NAME" "BLOBCONTAINERNAME=$QUEUE_NAME" "FINISHEDQUEUENAME=finished$QUEUE_NAME" "azstorageconnstring=secretref:connection-string-secret" 

@@ -1,0 +1,10 @@
+componentType: state.azure.blobstorage
+version: v1
+metadata:
+  - name: accountName
+    value: "fluxstorageaca"
+  - name: containerName
+    value: "fluxjob"
+scopes:
+  - sdcppdaprapp
+  

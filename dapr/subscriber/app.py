@@ -104,22 +104,25 @@ def publish_and_save(img,folder,idsave):
         logging.info('Published data: message sent')
         print('sent message and saved')
 
-@app.subscribe(pubsub_name='pubsubcomponent', topic='fluxjob')
-def mytopic(event: v1.Event) -> TopicEventResponse:
+#@app.subscribe(pubsub_name='pubsubcomponent', topic='fluxjob')
+#def mytopic(event: v1.Event) -> TopicEventResponse:
+@app.binding('fluxjobbinding')
+def mytopic(request: BindingRequest):
     #global should_retry
-    data = json.loads(event.Data())
+    #data = json.loads(event.Data())
+    data = json.loads(request.text())
     print(f'Received: idsave={data["idsave"]}, prompt="{data["prompt"]}"' 
           ' content_type="{event.content_type}"',flush=True)
     try:
         genimg(data)
     except Exception as e:
         print(f"Error processing message: {e}")
-        return TopicEventResponse('drop')
+        #return TopicEventResponse('drop')
     # if should_retry:
     #     should_retry = False  # we only retry once in this example
     #     sleep(0.5)  # add some delay to help with ordering of expected logs
     #     return TopicEventResponse('retry')
-    return TopicEventResponse('success')
+    #return TopicEventResponse('success')
 
 # @app.binding('holavatarsinput')
 # def incoming(request: BindingRequest):
@@ -127,6 +130,5 @@ def mytopic(event: v1.Event) -> TopicEventResponse:
 #     print(">>>>>>>Message Received: "+ incomingtext,flush=True)
 
 if __name__ == '__main__':
-    initstabledif()
     app.register_health_check(lambda: print('Healthy'))
     app.run(50051)

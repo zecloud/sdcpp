@@ -1,0 +1,7 @@
+build*/
+test/
+
+.cache/
+*.swp
+models/
+stable-diffusion-cpp-python/

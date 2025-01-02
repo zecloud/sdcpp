@@ -1,0 +1,9 @@
+componentType: pubsub.azure.servicebus.queues
+version: v1
+metadata:
+  - name: namespaceName
+    # Required when using Azure Authentication.
+    # Must be a fully-qualified domain name
+    value: "agentvideo-namespace.servicebus.windows.net"
+scopes:
+  - sdcppdaprapp

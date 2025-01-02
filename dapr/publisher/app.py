@@ -41,11 +41,11 @@ async def main(message: cl.Message):
         outputfile=pathimage["message"]
         resp =await client.get_state(DAPR_STORE_NAME, outputfile)
         image=resp.data
-        #await clientload_state(DAPR_STORE_NAME, outputfile, img) 
-        await cl.Message(
-            content=f"{outputfile}",
-            elements=image,
-        ).send()
+        
+    await cl.Message(
+        content=f"{outputfile}",
+        elements=image,
+    ).send()
 
 # async def process_message(message) -> TopicEventResponse:
 #     """
@@ -60,7 +60,8 @@ async def main(message: cl.Message):
 @cl.step(name="image generator...")
 async def diststabledif(prompt:str):
     async with DaprClient() as d:
-        idsave=string_to_filename(prompt)
+        #idsave=string_to_filename(prompt)
+        idsave = str(uuid.uuid4())
         req_data = {"prompt":prompt,"folder":"chainlit","idsave":idsave }
 #{'id': id, 'message': 'hello world'}
 
@@ -70,7 +71,7 @@ async def diststabledif(prompt:str):
             topic_name='fluxjob',
             data=json.dumps(req_data),
             data_content_type='application/json',
-            #publish_metadata={'ttlInSeconds': '100', 'rawPayload': 'false'},
+            publish_metadata={ 'rawPayload': 'true'},
         )
         
         #global in_progress
