@@ -1,6 +1,6 @@
 import json
 import os
-from time import sleep
+#from time import sleep
 import random
 from io import BytesIO
 from cachetools import cached
@@ -9,14 +9,19 @@ from dapr.clients import DaprClient
 from dapr.ext.grpc import App, BindingRequest
 from huggingface_hub import snapshot_download,hf_hub_download
 import logging
-from cloudevents.sdk.event import v1
-from dapr.clients.grpc._response import TopicEventResponse
+#from cloudevents.sdk.event import v1
+#from dapr.clients.grpc._response import TopicEventResponse
+from azure.storage.blob import BlobServiceClient
+from azure.identity import DefaultAzureCredential
 
 logging.basicConfig(level = logging.INFO)
 app = App()
 #should_retry = True  
 #DAPR_INPUT_STORE_NAME="hotshotoutput"
-DAPR_STORE_NAME=os.getenv("DAPR_STORE_NAME", "statestore")
+#DAPR_STORE_NAME=os.getenv("DAPR_STORE_NAME", "statestore")
+ACCOUNT_NAME = os.getenv("ACCOUNT_NAME", "fluxstorageaca")
+account_url="https://"+ACCOUNT_NAME+".blob.core.windows.net"
+CONTAINER_NAME = os.getenv("CONTAINER_NAME","fluxjob")
 #tmpdir="/home/outputs/tmp/"
 MAX = 64 * 1024 * 1024 # 64MB
 SUPERMAX = 512 * 1024 * 1024 # 512MB
@@ -86,12 +91,19 @@ def genimg(params):
     data_bytes=runstabledif(stable_diffusion,prompt)
     publish_and_save(data_bytes,folder,idsave)
 
+def azureupload(pathfile,data):
+    credential = DefaultAzureCredential()
+    blob_service_client = BlobServiceClient(account_url=account_url, credential=credential)
+    blob_client = blob_service_client.get_blob_client(container=CONTAINER_NAME, blob=pathfile)
+    blob_client.upload_blob(data)
+
 def publish_and_save(img,folder,idsave):
   #stringimg = base64.b64encode(image).decode('utf-8')
   with DaprClient(max_grpc_message_length=MAX) as client:
         #Using Dapr SDK to save and get state
         outputfile=folder+"/"+idsave+".png"
-        client.save_state(DAPR_STORE_NAME, outputfile, img) 
+        azureupload(outputfile,img)
+        #client.save_state(DAPR_STORE_NAME, outputfile, img) 
         req_data = {'message':  outputfile} 
         # Create a typed message with content type and body
         resp = client.publish_event(
