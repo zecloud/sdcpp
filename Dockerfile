@@ -17,7 +17,7 @@ ENV PATH="/opt/venv/bin:$PATH"
 RUN pip install --upgrade pip wheel
 #RUN CMAKE_ARGS="-DSD_CUBLAS=ON -DGGML_NATIVE=ON" pip install --verbose stable-diffusion-cpp-python
 #COPY ./stable-diffusion-cpp-python /stable-diffusion-cpp-python
-RUN CMAKE_ARGS="--DSD_CUDA=ON -DGGML_NATIVE=OFF" pip install --verbose stable-diffusion-cpp-python
+RUN CMAKE_ARGS="-DSD_CUDA=ON -DGGML_NATIVE=OFF -DGGML_AVX2=ON" pip install --verbose stable-diffusion-cpp-python
 
 #RUN pip install --upgrade pip wheel
 #RUN CMAKE_ARGS="-DSD_CUBLAS=ON" pip wheel --verbose --no-cache-dir --wheel-dir /sdcppwheel stable-diffusion-cpp-python
