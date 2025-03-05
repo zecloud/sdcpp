@@ -1,4 +1,4 @@
-FROM zecloud.azurecr.io/sdcppcuda:fnotinative
+FROM zecloud.azurecr.io/sdcppcuda:lorafixavx2
 
 COPY requirements.txt /home
 
