@@ -13,6 +13,7 @@ import logging
 #from dapr.clients.grpc._response import TopicEventResponse
 from azure.storage.blob import BlobServiceClient
 from azure.identity import DefaultAzureCredential
+import threading
 
 logging.basicConfig(level = logging.INFO)
 app = App()
@@ -45,7 +46,8 @@ def dlmodels():
     t5path=hf_hub_download(repo_id="Green-Sky/flux.1-schnell-GGUF", filename="t5xxl_q8_0.gguf",local_dir="pretrained_models")
     return modelpath,vaepath,clippath,t5path
 
-@cached(cache={})
+lock = threading.Lock()
+@cached(cache={},lock=lock)
 def initstabledif():    
     modelpath,vaepath,clippath,t5path=dlmodels()
     stable_diffusion = StableDiffusion(
