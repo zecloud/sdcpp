@@ -3,7 +3,7 @@ import os
 #from time import sleep
 import random
 from io import BytesIO
-from cachetools import cached
+from cachetools import cached,LRUCache
 from stable_diffusion_cpp import StableDiffusion
 from dapr.clients import DaprClient
 from dapr.ext.grpc import App, BindingRequest
@@ -46,8 +46,9 @@ def dlmodels():
     t5path=hf_hub_download(repo_id="Green-Sky/flux.1-schnell-GGUF", filename="t5xxl_q8_0.gguf",local_dir="pretrained_models")
     return modelpath,vaepath,clippath,t5path
 
-lock = threading.Lock()
-@cached(cache={},lock=lock)
+lock = threading.RLock()
+cache = LRUCache(maxsize=1)
+@cached(cache=cache,lock=lock)
 def initstabledif():    
     modelpath,vaepath,clippath,t5path=dlmodels()
     stable_diffusion = StableDiffusion(
