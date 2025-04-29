@@ -1,8 +1,3 @@
-# sdcpp
-Voici un exemple de README pour votre dépôt, basé sur les documents que vous avez fournis et en intégrant les fonctionnalités nécessaires à l'exécution d'un conteneur sur Azure Container Apps avec GPU sans serveur :
-
----
-
 # SDCpp: Stable Diffusion avec Azure Container Apps Serverless GPU
 
 Bienvenue dans le dépôt **SDCpp**. Ce projet utilise [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp) basé sur [ggml](https://github.com/ggerganov/ggml), qui fonctionne de la même façon que [llama.cpp](https://github.com/ggerganov/llama.cpp) et ses bindings Python via [stable-diffusion-cpp-python](https://github.com/william-murray1204/stable-diffusion-cpp-python) pour offrir une solution performante et extensible de génération d'images basée sur Stable Diffusion et FLUX. Le tout est empaqueté dans un conteneur Docker déployable sur **Azure Container Apps** avec support GPU sans serveur.
