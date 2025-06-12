@@ -72,11 +72,11 @@ def initstabledif():
 #     imgrequested=json.loads(message_content)
 #     genimg(imgrequested)
 
-def runstabledif(stable_diffusion,prompt,width,height):
+def runstabledif(stable_diffusion,prompt,width,height,steps=25):
     seed = random.randint(0, 2 ** 32 - 1)
     output = stable_diffusion.txt_to_img(
         prompt=prompt,
-        sample_steps=25,
+        sample_steps=steps,
         cfg_scale=1.0, # a cfg_scale of 1 is recommended for FLUX
         sample_method="euler", # euler is recommended for FLUX
         seed=seed,
@@ -95,7 +95,8 @@ def genimg(params):
     idsave=params["idsave"]
     width=params.get("width",512)
     height=params.get("height",512)
-    data_bytes=runstabledif(stable_diffusion,prompt,width,height)
+    steps=params.get("steps",25)
+    data_bytes=runstabledif(stable_diffusion,prompt,width,height,steps)
     publish_and_save(data_bytes,folder,idsave)
 
 def azureupload(pathfile,data):
