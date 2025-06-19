@@ -248,3 +248,143 @@ Ce projet est sous licence MIT. Consultez le fichier [LICENSE](./LICENSE) pour p
 ---
 
 Ce README est basé sur la documentation des projets intégrés et inclut des instructions spécifiques pour le déploiement sur Azure Container Apps. Si vous avez besoin d'ajouter des informations spécifiques, faites-le moi savoir !
+
+---
+
+## 📂 Structure du projet
+
+Le projet est organisé en plusieurs sous-dossiers, chacun ayant un rôle spécifique. Voici un aperçu de la structure globale du projet :
+
+- `chainlit/` : Contient le code pour l'application Chainlit.
+- `dapr/publisher/` : Contient le code pour le service de publication Dapr.
+- `dapr/subscriber/` : Contient le code pour le service de souscription Dapr.
+- `fluxjob/` : Contient le code pour le traitement des tâches de flux.
+- `uitester/` : Contient le code pour l'application de test d'interface utilisateur.
+
+---
+
+## 📁 Dossier `chainlit`
+
+Le dossier `chainlit` contient le code pour l'application Chainlit.
+
+### Contenu
+
+- `app.py` : Le fichier principal de l'application Chainlit.
+- `Dockerfile` : Le fichier Docker pour construire l'image de l'application.
+- `infraaca.sh` : Script pour déployer l'application sur Azure Container Apps.
+- `requirements.txt` : Liste des dépendances Python nécessaires pour l'application.
+
+### Instructions pour exécuter le code
+
+1. Construisez l'image Docker :
+   ```bash
+   docker build -t chainlit .
+   ```
+
+2. Exécutez le conteneur Docker :
+   ```bash
+   docker run -p 8000:8000 chainlit
+   ```
+
+---
+
+## 📁 Dossier `dapr/publisher`
+
+Le dossier `dapr/publisher` contient le code pour le service de publication Dapr.
+
+### Contenu
+
+- `app.py` : Le fichier principal du service de publication.
+- `Dockerfile` : Le fichier Docker pour construire l'image du service.
+- `infraaca.sh` : Script pour déployer le service sur Azure Container Apps.
+- `requirements.txt` : Liste des dépendances Python nécessaires pour le service.
+
+### Instructions pour exécuter le code
+
+1. Construisez l'image Docker :
+   ```bash
+   docker build -t dapr-publisher .
+   ```
+
+2. Exécutez le conteneur Docker :
+   ```bash
+   docker run -p 8000:8000 dapr-publisher
+   ```
+
+---
+
+## 📁 Dossier `dapr/subscriber`
+
+Le dossier `dapr/subscriber` contient le code pour le service de souscription Dapr.
+
+### Contenu
+
+- `app.py` : Le fichier principal du service de souscription.
+- `Dockerfile` : Le fichier Docker pour construire l'image du service.
+- `infraaca.sh` : Script pour déployer le service sur Azure Container Apps.
+- `requirements.txt` : Liste des dépendances Python nécessaires pour le service.
+- `pubsub.yaml` : Configuration Pub/Sub pour Dapr.
+- `statestore.yaml` : Configuration du magasin d'état pour Dapr.
+
+### Instructions pour exécuter le code
+
+1. Construisez l'image Docker :
+   ```bash
+   docker build -t dapr-subscriber .
+   ```
+
+2. Exécutez le conteneur Docker :
+   ```bash
+   docker run dapr-subscriber
+   ```
+
+---
+
+## 📁 Dossier `fluxjob`
+
+Le dossier `fluxjob` contient le code pour le traitement des tâches de flux.
+
+### Contenu
+
+- `blockprocessor.py` : Gestionnaire de blobs Azure.
+- `Dockerfile` : Le fichier Docker pour construire l'image du traitement des tâches.
+- `job.py` : Le fichier principal pour le traitement des tâches.
+- `msgprocessor.py` : Gestionnaire de visibilité des messages.
+- `queueprocessor.py` : Gestionnaire de file d'attente Azure.
+- `requirements.txt` : Liste des dépendances Python nécessaires pour le traitement des tâches.
+
+### Instructions pour exécuter le code
+
+1. Construisez l'image Docker :
+   ```bash
+   docker build -t fluxjob .
+   ```
+
+2. Exécutez le conteneur Docker :
+   ```bash
+   docker run fluxjob
+   ```
+
+---
+
+## 📁 Dossier `uitester`
+
+Le dossier `uitester` contient le code pour l'application de test d'interface utilisateur.
+
+### Contenu
+
+- `app.py` : Le fichier principal de l'application de test.
+- `Dockerfile` : Le fichier Docker pour construire l'image de l'application.
+- `requirements.txt` : Liste des dépendances Python nécessaires pour l'application.
+
+### Instructions pour exécuter le code
+
+1. Construisez l'image Docker :
+   ```bash
+   docker build -t uitester .
+   ```
+
+2. Exécutez le conteneur Docker :
+   ```bash
+   docker run -p 8000:8000 uitester
+   ```
